@@ -1,8 +1,13 @@
 """Turn a 10-K HTML filing into numbered pages.
 
 EDGAR filings mark printed page breaks with <hr style="page-break-after:always">,
-so the document can be split exactly where the printed pages end. That lets the
-model cite real page numbers a person can check in the PDF version.
+so the document can be split exactly where the printed pages end.
+
+Page numbers here count those sections from the very start of the file,
+including the unnumbered cover and contents pages. They can therefore run a
+couple of numbers ahead of the page number printed in the filing's footer
+(in Apple's fiscal 2026 10-K, section 21 is printed page 19). To check a
+citation, search the filing for the quoted figure.
 """
 
 from __future__ import annotations

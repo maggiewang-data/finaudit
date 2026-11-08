@@ -107,7 +107,7 @@ make test                 # 24 tests, no API key needed (a scripted fake model s
 ```
 src/finaudit/
   sec.py         download the latest 10-K and the matching XBRL ground truth from EDGAR
-  document.py    split the filing into its printed pages (EDGAR page-break markers)
+  document.py    split the filing at EDGAR page-break markers (numbering includes the cover pages)
   retrieval.py   BM25 retriever; optional cached embedding retriever
   prompts.py     every prompt in one place
   llm.py         raw Anthropic API client + a scripted fake for tests
