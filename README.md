@@ -33,7 +33,7 @@ Separately, `evaluate.py` scores every answer against **the company's own XBRL f
 
 ## The representation-bias probe
 
-Models see far more text about Apple than about a small company like Universal Electronics, a consumer electronics maker with a market cap around 1/2000th of Apple's. Does that change how the model behaves on identical questions?
+Models see far more text about Apple than about a small company like Universal Electronics, a consumer electronics maker worth thousands of times less than Apple. Does that change how the model behaves on identical questions?
 
 The probe asks the same seven financial questions about both companies under two conditions:
 
