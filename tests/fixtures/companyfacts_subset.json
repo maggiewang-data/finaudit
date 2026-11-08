@@ -1,0 +1,11 @@
+{"facts": {"us-gaap": {
+  "ResearchAndDevelopmentExpense": {"units": {"USD": [
+    {"start": "2024-09-29", "end": "2025-09-27", "val": 34550000000, "accn": "0000320193-26-000026", "fy": 2026, "fp": "FY", "form": "10-K"},
+    {"start": "2025-06-29", "end": "2026-09-26", "val": 11000000000, "accn": "0000320193-26-000026", "fy": 2026, "fp": "FY", "form": "10-K"},
+    {"start": "2025-09-28", "end": "2026-09-26", "val": 45765000000, "accn": "0000320193-26-000026", "fy": 2026, "fp": "FY", "form": "10-K"}]}},
+  "CashAndCashEquivalentsAtCarryingValue": {"units": {"USD": [
+    {"end": "2026-09-26", "val": 36305000000, "accn": "0000320193-26-000026", "fy": 2026, "fp": "FY", "form": "10-K"}]}},
+  "EarningsPerShareDiluted": {"units": {"USD/shares": [
+    {"start": "2025-09-28", "end": "2026-09-26", "val": 8.98, "accn": "0000320193-26-000026", "fy": 2026, "fp": "FY", "form": "10-K"},
+    {"start": "2024-09-29", "end": "2025-09-27", "val": 7.46, "accn": "0000320193-25-000079", "fy": 2025, "fp": "FY", "form": "10-K"}]}}
+}}}
