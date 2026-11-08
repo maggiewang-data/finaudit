@@ -34,7 +34,7 @@ class Judgement:
 
 
 VERDICT_RE = re.compile(r"verdict\W*(GROUNDED|PARTIAL|HALLUCINATED|REFUSED)", re.I)
-REASON_RE = re.compile(r"reason\W*:?\W*(.+)", re.I)
+REASON_RE = re.compile(r"reason\W*:?\W*(.+)", re.I | re.S)
 
 
 def parse_judgement(text: str) -> Judgement:
@@ -44,8 +44,8 @@ def parse_judgement(text: str) -> Judgement:
     clean = text.replace("*", "").replace("#", "").replace("`", "")
     v = VERDICT_RE.search(clean)
     r = REASON_RE.search(clean)
-    return Judgement(v.group(1).upper() if v else "UNPARSEABLE",
-                     r.group(1).strip() if r else "")
+    reason = " ".join(r.group(1).split())[:400] if r else ""
+    return Judgement(v.group(1).upper() if v else "UNPARSEABLE", reason)
 
 
 def is_refusal(answer: str) -> bool:

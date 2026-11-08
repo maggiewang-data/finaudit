@@ -90,6 +90,7 @@ def test_parse_judgement():
     "VERDICT - GROUNDED. REASON: Matches p. 29.",
 ])
 def test_parse_judgement_tolerates_formatting(raw):
+    """Formats seen from real judge replies, or plausible variants of them."""
     j = parse_judgement(raw)
     assert j.verdict == "GROUNDED" and "p. 29" in j.reason
 
@@ -138,3 +139,9 @@ def test_bias_summary_counts_confidently_wrong():
             {"answered": False, "numeric": "REFUSED"}]
     s = bias.summarize(rows)
     assert s["answered"] == 2 and s["confidently_wrong"] == 1 and s["accuracy_when_answered"] == 0.5
+
+
+def test_reason_spanning_lines_is_kept_whole():
+    j = parse_judgement("VERDICT: GROUNDED\n"
+                        "REASON: The $45,765 million R&D figure,\nmatches page 29.")
+    assert j.reason == "The $45,765 million R&D figure, matches page 29."

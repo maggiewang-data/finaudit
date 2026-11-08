@@ -70,7 +70,7 @@ cp .env.example .env      # add your Anthropic API key and an SEC user-agent (na
 make fetch                # latest 10-Ks + XBRL ground truth for AAPL and UEIC
 make ask Q="How much did Apple spend on research and development?"
 make eval                 # full evaluation -> results/eval.md
-make test                 # 22 tests, no API key needed (a scripted fake model stands in)
+make test                 # 23 tests, no API key needed (a scripted fake model stands in)
 ```
 
 ## Project structure
@@ -85,7 +85,7 @@ src/finaudit/
   verify.py      judge parsing, refusal detection, numeric check against ground truth
   bias.py        large-cap vs. small-cap probe
   evaluate.py    full evaluation and report
-tests/           22 tests using real excerpts and figures from Apple's fiscal 2026 10-K
+tests/           23 tests using real excerpts and figures from Apple's fiscal 2026 10-K
 ```
 
 ## Limits
