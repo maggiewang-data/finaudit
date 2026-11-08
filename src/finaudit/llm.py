@@ -35,7 +35,7 @@ class AnthropicClient:
     def complete(self, system: str, user: str, model: str, max_tokens: int = 600) -> LLMResponse:
         t0 = time.perf_counter()
         msg = self.client.messages.create(
-            model=model, max_tokens=max_tokens, temperature=0,
+            model=model, max_tokens=max_tokens,
             system=system, messages=[{"role": "user", "content": user}])
         text = "".join(b.text for b in msg.content if b.type == "text")
         return LLMResponse(text, model, msg.usage.input_tokens, msg.usage.output_tokens,

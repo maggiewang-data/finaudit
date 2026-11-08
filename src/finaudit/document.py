@@ -8,10 +8,14 @@ model cite real page numbers a person can check in the PDF version.
 from __future__ import annotations
 
 import re
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+
+# iXBRL filings start with an XML declaration but are HTML; parsing as HTML is correct.
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 PAGE_BREAK = re.compile(r"<hr[^>]*page-break-(?:after|before)\s*:\s*always[^>]*>", re.I)
 MIN_PAGE_CHARS = 100
