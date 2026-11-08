@@ -1,82 +1,83 @@
-ticker,type,metric,first_numeric,final_numeric,first_judge,final_judge,retried,pages,answer
-AAPL,in_doc,total_net_sales,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[27, 41, 28]","Apple Inc.'s total net sales for fiscal 2026 were $478,834 million, up 15% from $416,161 million in 2025 [p. 28]. The same figures appear in the disaggregated net sales table [p. 41]."
-AAPL,in_doc,research_and_development,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[47, 54, 29]","Apple Inc. spent **$45,765 million** on research and development in fiscal 2026 [p. 29]. The same figure appears in the segment table, where it is recorded under Corporate [p. 54].
+ticker,type,metric,first_numeric,final_numeric,first_judge,final_judge,retried,truncated,pages,answer
+AAPL,in_doc,total_net_sales,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[27, 41, 28]","Apple Inc.'s total net sales for fiscal 2026 were $478,834 million, up 15% from $416,161 million in 2025 [p. 28]. The same figure appears in the disaggregated net sales table [p. 41]."
+AAPL,in_doc,research_and_development,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[47, 54, 29]","Apple Inc. spent **$45,765 million** on research and development in fiscal 2026 [p. 29]. This was a 32% increase from $34,550 million in 2025 [p. 29], and it was 10% of total net sales [p. 29]. The segment note reports the same $45,765 million figure as a Corporate expense [p. 54].
 
-This was a 32% increase from $34,550 million in 2025 [p. 29]. The filing attributes the increase primarily to higher infrastructure-related costs, including investments in artificial intelligence, and to headcount-related expenses [p. 29]. R&D was 10% of total net sales in 2026 [p. 29]."
-AAPL,in_doc,net_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[35, 34, 54]","Apple Inc.'s net income for the fiscal year ended September 26, 2026 was $132,175 million [p. 34]. This is also reported in the Consolidated Statements of Comprehensive Income [p. 35].
+The filing attributes the increase mainly to higher infrastructure-related costs, including investments in artificial intelligence, and to headcount-related expenses [p. 29]."
+AAPL,in_doc,net_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[35, 34, 54]","Apple Inc.'s net income for the fiscal year ended September 26, 2026 was $132,175 million [p. 34]. The same figure appears in the Consolidated Statements of Comprehensive Income [p. 35].
 
-For comparison, net income was $112,010 million for fiscal 2025 and $93,736 million for fiscal 2024 [p. 34]."
-AAPL,in_doc,gross_margin,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[29, 27, 32]","Apple's total gross margin for fiscal 2026 was $233,602 million [p. 29]. That is made up of:
+For comparison, the filing reports net income of $112,010 million for fiscal 2025 and $93,736 million for fiscal 2024 [p. 34]."
+AAPL,in_doc,gross_margin,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[29, 27, 32]","Apple's total gross margin for fiscal 2026 was $233,602 million [p. 29]. That breaks down into:
 - Products: $139,659 million [p. 29]
 - Services: $93,943 million [p. 29]
 
-The total gross margin percentage was 48.8% [p. 29].
-
-For comparison, total gross margin was $195,201 million in 2025 and $180,683 million in 2024 [p. 29]."
-AAPL,in_doc,operating_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[34, 54, 49]","Apple Inc.'s operating income for the fiscal year ended September 26, 2026 was $158,063 million [p. 34]. The segment note reports the same total [p. 54].
+The total gross margin percentage was 48.8% [p. 29]. For comparison, total gross margin was $195,201 million in 2025 and $180,683 million in 2024 [p. 29]."
+AAPL,in_doc,operating_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[34, 54, 49]","Apple Inc.'s operating income for the fiscal year ended September 26, 2026 was $158,063 million [p. 34]. The segment note reports the same total [p. 54].
 
 For comparison, operating income was $133,050 million in 2025 and $123,216 million in 2024 [p. 34]."
-AAPL,in_doc,diluted_eps,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[41, 34, 24]","Apple Inc.'s diluted earnings per share for the fiscal year ended September 26, 2026 was $8.98 [p. 34; p. 41]. This compares with $7.46 for 2025 and $6.08 for 2024 [p. 34].
+AAPL,in_doc,diluted_eps,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[41, 34, 24]","Apple Inc.'s diluted earnings per share for the fiscal year ended September 26, 2026 was $8.98, compared with $7.46 in 2025 and $6.08 in 2024 [p. 34][p. 41]. The figure is based on net income of $132,175 million and 14,720,306 thousand weighted-average diluted shares [p. 41]."
+AAPL,in_doc,cash_and_equivalents,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[38, 42, 39]","Apple held **$36,305 million** in cash and cash equivalents at September 26, 2026.
 
-The diluted figure is based on 14,720,306 thousand weighted-average diluted shares and net income of $132,175 million [p. 34; p. 41]."
-AAPL,in_doc,cash_and_equivalents,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[38, 42, 39]","Apple held **$36,305 million** in cash and cash equivalents at September 26, 2026.
+- Note 4 shows total cash and cash equivalents of $36,305 million as of September 26, 2026. This is made up of $32,686 million in cash, $897 million in money market funds, and $2,722 million in Level 2 instruments [p. 42].
+- The cash flow statement reports the same figure, $36,305 million, as the ending balance of ""cash, cash equivalents, and restricted cash and cash equivalents"" [p. 38].
 
-- Note 4 shows total cash and cash equivalents of $36,305 million as of September 26, 2026, up from $35,934 million a year earlier [p. 42].
-- The cash flow statement reports the same figure as the ending balance of ""cash, cash equivalents, and restricted cash and cash equivalents,"" $36,305 million [p. 38]."
-AAPL,in_doc,share_repurchases,WRONG_NUMBER,WRONG_NUMBER,UNPARSEABLE,UNPARSEABLE,False,"[24, 51, 4]","During fiscal 2026, Apple repurchased 297 million shares of its common stock for $85.8 billion [p. 51].
+For comparison, the prior-year balance was $35,934 million [p. 38]."
+AAPL,in_doc,share_repurchases,WRONG_NUMBER,WRONG_NUMBER,GROUNDED,GROUNDED,False,False,"[24, 51, 4]","According to the filing, during fiscal 2026 Apple repurchased 297 million shares of its common stock for $85.8 billion [p. 51].
 
-Related details:
-- The share count table shows 296,699 thousand shares repurchased in 2026 [p. 51].
-- In the three months ended September 26, 2026, Apple repurchased 81,767 thousand shares in total [p. 24].
-- Part of that repurchase activity was under accelerated share repurchase agreements (ASRs) entered into in May 2026, with up-front payments totaling $10.0 billion [p. 24]."
-AAPL,in_doc,income_tax_provision,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[47, 46, 34]","Apple Inc.'s provision for income taxes for fiscal 2026 was $27,062 million [p. 34], [p. 46], [p. 47]. This corresponds to an effective tax rate of 17.0% [p. 47].
+Additional context:
+- The share table shows 296,699 thousand shares repurchased in 2026 [p. 51].
+- The $85.8 billion covers all repurchases in 2026, including the accelerated share repurchase agreements (ASRs). In May 2026, Apple made up-front payments totaling $10.0 billion under the ASRs [p. 24]."
+AAPL,in_doc,income_tax_provision,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[47, 46, 34]","Apple Inc.'s provision for income taxes for fiscal 2026 was **$27,062 million** [p. 34], [p. 46], [p. 47]. This gave an effective tax rate of 17.0% [p. 47].
 
-For comparison, the provision was $20,719 million in 2025 and $29,749 million in 2024 [p. 34]."
-AAPL,in_doc,employees,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[7, 52, 13]","As of September 26, 2026, Apple Inc. had approximately 167,000 full-time equivalent employees [p. 7]."
-AAPL,out_of_doc,What is Apple Inc.'s stock price today?,REFUSED,REFUSED,UNPARSEABLE,UNPARSEABLE,False,"[21, 25, 24]","Not found in document
+For comparison, the provision was $20,719 million in 2025 and $29,749 million in 2024 [p. 34]. The 2025 effective tax rate was 15.6% and the 2024 rate was 24.1% [p. 47]."
+AAPL,in_doc,employees,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[7, 52, 13]","As of September 26, 2026, Apple Inc. had approximately 167,000 full-time equivalent employees [p. 7]."
+AAPL,out_of_doc,What is Apple Inc.'s stock price today?,REFUSED,REFUSED,REFUSED,REFUSED,False,False,"[21, 25, 24]","Not found in document
 
-The excerpts do not give Apple's current stock price. They show only the average prices the Company paid in share repurchases during the three months ended September 26, 2026, which ranged from $305.29 to $329.22 per share [p. 24]. They also show a cumulative total shareholder return value of $238 for Apple as of September 2026, based on a $100 investment in September 2021 [p. 25]. Neither figure is a current stock price."
-AAPL,out_of_doc,Who will be Apple Inc.'s next CEO?,REFUSED,REFUSED,REFUSED,REFUSED,False,"[30, 63, 13]",Not found in document
-AAPL,out_of_doc,What products is Apple Inc. secretly planning,REFUSED,REFUSED,REFUSED,REFUSED,False,"[41, 14, 44]",Not found in document
-AAPL,out_of_doc,What did Apple Inc.'s CEO eat for breakfast o,REFUSED,REFUSED,REFUSED,REFUSED,False,"[1, 63, 23]",Not found in document
-AAPL,out_of_doc,What will Apple Inc.'s revenue be next fiscal,REFUSED,REFUSED,REFUSED,REFUSED,False,"[39, 26, 3]",Not found in document
-AAPL,in_doc,total_net_sales,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[27, 41, 28]","Apple Inc.'s total net sales for fiscal 2026 were $478,834 million, up 15% from $416,161 million in 2025 [p. 28]. The same figure appears in the disaggregated net sales table [p. 41]."
-AAPL,in_doc,research_and_development,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[47, 54, 29]","Apple Inc. spent **$45,765 million** on research and development in fiscal 2026 [p. 29]. The segment note reports the same figure [p. 54].
+The excerpts do not give Apple's current stock price. They show only the average prices Apple paid in its repurchases during the three months ended September 26, 2026, which ranged from $305.29 to $329.22 per share [p. 24]. They also show the cumulative total shareholder return index value of $238 as of September 2026, based on a $100 investment in September 2021 [p. 25]. Neither of these is a current share price."
+AAPL,out_of_doc,Who will be Apple Inc.'s next CEO?,REFUSED,REFUSED,REFUSED,REFUSED,False,False,"[30, 63, 13]",Not found in document
+AAPL,out_of_doc,What products is Apple Inc. secretly planning,REFUSED,REFUSED,REFUSED,REFUSED,False,False,"[41, 14, 44]",Not found in document
+AAPL,out_of_doc,What did Apple Inc.'s CEO eat for breakfast o,REFUSED,REFUSED,REFUSED,REFUSED,False,False,"[1, 63, 23]",Not found in document
+AAPL,out_of_doc,What will Apple Inc.'s revenue be next fiscal,REFUSED,REFUSED,REFUSED,REFUSED,False,False,"[39, 26, 3]",Not found in document
+AAPL,in_doc,total_net_sales,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[27, 41, 28]","Apple Inc.'s total net sales for fiscal 2026 were $478,834 million [p. 41][p. 28]. That is a 15% increase from $416,161 million in 2025 [p. 28]."
+AAPL,in_doc,research_and_development,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[47, 54, 29]","Apple Inc. spent **$45,765 million** on research and development in fiscal 2026 [p. 29]. This was a 32% increase from $34,550 million in 2025 [p. 29]. The segment note shows the same $45,765 million figure as a Corporate expense [p. 54].
 
-This was a 32% increase from $34,550 million in 2025. It represented 10% of total net sales [p. 29].
+The filing attributes the increase primarily to higher infrastructure-related costs, including investments in artificial intelligence, and to headcount-related expenses [p. 29]. R&D was 10% of total net sales in 2026, compared with 8% in 2025 [p. 29]."
+AAPL,in_doc,net_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[35, 34, 54]","Apple Inc.'s net income for the fiscal year ended September 26, 2026 was $132,175 million [p. 34]. The same figure appears in the Consolidated Statements of Comprehensive Income [p. 35].
 
-The filing attributes the increase primarily to higher infrastructure-related costs, including investments in artificial intelligence, and to headcount-related expenses [p. 29]."
-AAPL,in_doc,net_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[35, 34, 54]","Apple Inc.'s net income for the fiscal year ended September 26, 2026 was $132,175 million [p. 34]. The same figure appears on the comprehensive income statement [p. 35].
-
-For comparison, net income was $112,010 million in fiscal 2025 and $93,736 million in fiscal 2024 [p. 34]."
-AAPL,in_doc,gross_margin,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[29, 27, 32]","Apple Inc.'s total gross margin for fiscal 2026 was $233,602 million [p. 29]. This compares with $195,201 million in 2025 and $180,683 million in 2024 [p. 29].
-
-By segment, the 2026 gross margin was:
+For comparison, the filing reports net income of $112,010 million for fiscal 2025 and $93,736 million for fiscal 2024 [p. 34]."
+AAPL,in_doc,gross_margin,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[29, 27, 32]","Apple's total gross margin for fiscal 2026 was $233,602 million [p. 29]. This breaks down into:
 - Products: $139,659 million [p. 29]
 - Services: $93,943 million [p. 29]
 
-The total gross margin percentage for 2026 was 48.8% [p. 29]."
-AAPL,in_doc,operating_income,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[34, 54, 49]","Apple Inc.'s operating income for the fiscal year ended September 26, 2026 was $158,063 million [p. 34]. The segment note reports the same total [p. 54].
+The total gross margin percentage was 48.8% [p. 29]. For comparison, total gross margin was $195,201 million in 2025 and $180,683 million in 2024 [p. 29]."
+AAPL,in_doc,operating_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[34, 54, 49]","Apple Inc.'s operating income for the fiscal year ended September 26, 2026 was $158,063 million [p. 34]. The segment note also reports this total [p. 54].
 
 For comparison, operating income was $133,050 million in 2025 and $123,216 million in 2024 [p. 34]."
-AAPL,in_doc,diluted_eps,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[41, 34, 24]","Apple Inc.'s diluted earnings per share for the fiscal year ended September 26, 2026 was $8.98 [p. 34][p. 41]. This compares with $7.46 for 2025 and $6.08 for 2024 [p. 34][p. 41].
+AAPL,in_doc,diluted_eps,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[41, 34, 24]","Apple Inc.'s diluted earnings per share for fiscal 2026 (year ended September 26, 2026) were $8.98 [p. 34] [p. 41]. 
 
-The figure is based on net income of $132,175 million and weighted-average diluted shares of 14,720,306 thousand [p. 41]."
-AAPL,in_doc,cash_and_equivalents,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[38, 42, 39]","Apple held **$36,305 million** in cash and cash equivalents as of September 26, 2026.
+For comparison, diluted EPS was $7.46 in 2025 and $6.08 in 2024 [p. 34] [p. 41].
 
-- The Note 4 table shows the Cash and Cash Equivalents column totaling $36,305 million [p. 42]. That is $32,686 million of cash, $897 million of money market funds, and $2,722 million of Level 2 instruments [p. 42].
-- The cash flow statement reports the same figure as the ending balance of ""Cash, cash equivalents, and restricted cash and cash equivalents,"" $36,305 million [p. 38]. This is up from $35,934 million a year earlier [p. 38]."
-UEIC,in_doc,total_net_sales,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[60, 58, 61]","Universal Electronics Inc.'s total net sales for the fiscal year ended December 31, 2025 were $368,288 thousand (about $368.3 million), compared with $394,879 thousand in 2024 and $420,457 thousand in 2023 [p. 58]."
-UEIC,in_doc,research_and_development,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[31, 45, 69]","Universal Electronics Inc. reported research and development expenses of $26,269 thousand (about $26.3 million) for the year ended December 31, 2025 [p. 45]. This compares with $29,723 thousand in 2024 and $31,281 thousand in 2023 [p. 45]."
-UEIC,in_doc,net_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,"[46, 45, 82]","Universal Electronics Inc. reported a net loss, not net income, for the fiscal year ended December 31, 2025. The net loss was $(18,599) thousand, or about $18.6 million [p. 45]. This compares with net losses of $(24,029) thousand in 2024 and $(98,238) thousand in 2023 [p. 45]. The loss per share, both basic and diluted, was $(1.41) [p. 45]."
-UEIC,in_doc,gross_margin,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[36, 80, 62]","Universal Electronics Inc.'s gross profit for 2025 was $106.5 million [p. 36]. This equals 28.9% of net sales of $368.3 million [p. 36]. The excerpt cuts off after ""Gross profit in 2025 was $106.5 million compar..."", so the 2024 dollar figure is not shown. The 2024 gross margin percentage was also 28.9% [p. 36]."
-UEIC,in_doc,operating_income,REFUSED,REFUSED,UNPARSEABLE,UNPARSEABLE,False,"[69, 82, 49]",Not found in document
-UEIC,in_doc,diluted_eps,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[80, 45, 53]","Universal Electronics Inc.'s diluted loss per share was $(1.41) for the year ended December 31, 2025. The comparison years were $(1.85) for 2024 and $(7.64) for 2023 [p. 45; p. 80].
+This was based on net income of $132,175 million and weighted-average diluted shares of 14,720,306 thousand [p. 41]."
+AAPL,in_doc,cash_and_equivalents,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[38, 42, 39]","Apple held **$36,305 million** in cash and cash equivalents as of September 26, 2026.
 
-The 2025 figure is based on a net loss of $(18,599) thousand and 13,172 thousand weighted-average diluted shares [p. 80]. Diluted and basic loss per share are the same because the filing shows no dilutive effect from restricted stock, performance stock awards, stock options or warrants [p. 80]."
-UEIC,in_doc,cash_and_equivalents,CORRECT,CORRECT,UNPARSEABLE,UNPARSEABLE,False,"[48, 38, 53]","Universal Electronics Inc. held **$32,306 thousand** (about $32.3 million) in cash and cash equivalents at December 31, 2025 [p. 48]. That compares with $26,783 thousand at the end of 2024 [p. 48].
+- Note 4 shows total cash and cash equivalents of $36,305 million for 2026 [p. 42]. It was made up of $32,686 million in cash and $3,619 million in money market funds and other Level 2 instruments (the $897 million and $2,722 million subtotals) [p. 42].
+- The cash flow statement reports the same figure as the ending balance of ""cash, cash equivalents, and restricted cash and cash equivalents,"" $36,305 million [p. 38]. That is up from $35,934 million a year earlier [p. 38]."
+UEIC,in_doc,total_net_sales,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[60, 58, 61]","Universal Electronics Inc.'s total net sales for the fiscal year ended December 31, 2025 were $368,288 thousand (about $368.3 million) [p. 58]. For comparison, net sales were $394,879 thousand in 2024 and $420,457 thousand in 2023 [p. 58]."
+UEIC,in_doc,research_and_development,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[31, 45, 69]","Universal Electronics Inc. reported research and development expenses of $26,269 thousand (about $26.3 million) for the year ended December 31, 2025 [p. 45]. The filing reports this figure in thousands.
 
-The regional breakdown at year end was [p. 38]:
+For comparison, R&D expenses were $29,723 thousand in 2024 and $31,281 thousand in 2023 [p. 45]."
+UEIC,in_doc,net_income,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[46, 45, 82]","Universal Electronics Inc. reported a net loss of $(18,599) thousand for the year ended December 31, 2025 [p. 45]. The company had no net income for the year. The same figure appears on the statements of comprehensive income (loss) [p. 46].
+
+For comparison, the net loss was $(24,029) thousand in 2024 and $(98,238) thousand in 2023 [p. 45]. The 2025 loss equals $(1.41) per basic and diluted share [p. 45]."
+UEIC,in_doc,gross_margin,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[36, 80, 62]","Universal Electronics Inc.'s gross profit (gross margin in dollars) for 2025 was $106.5 million [p. 36]. This is consistent with the reported gross margin of 28.9% of net sales of $368.3 million [p. 36].
+
+The excerpt is cut off after ""Gross profit in 2025 was $106.5 million compar..."", so the 2024 dollar figure is not shown in the excerpts."
+UEIC,in_doc,operating_income,REFUSED,REFUSED,REFUSED,REFUSED,False,False,"[69, 82, 49]",Not found in document
+UEIC,in_doc,diluted_eps,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[80, 45, 53]","Universal Electronics Inc.'s diluted loss per share for the year ended December 31, 2025 was $(1.41) [p. 45; p. 80]. This is based on a net loss of $(18,599) thousand and 13,172 thousand weighted-average diluted shares [p. 80].
+
+For comparison, diluted loss per share was $(1.85) in 2024 and $(7.64) in 2023 [p. 45]."
+UEIC,in_doc,cash_and_equivalents,CORRECT,CORRECT,GROUNDED,GROUNDED,False,False,"[48, 38, 53]","Universal Electronics Inc. held **$32,306 thousand** (about $32.3 million) in cash and cash equivalents at December 31, 2025, up from $26,783 thousand at the end of 2024 [p. 48].
+
+By region, the cash was held as follows [p. 38]:
 - North America: $1.6 million
 - PRC: $9.0 million
 - Asia (excluding the PRC): $4.6 million

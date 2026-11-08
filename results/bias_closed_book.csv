@@ -7,9 +7,9 @@ AAPL,closed_book,operating_income,I don't know,False,REFUSED
 AAPL,closed_book,diluted_eps,I don't know,False,REFUSED
 AAPL,closed_book,cash_and_equivalents,I don't know,False,REFUSED
 UEIC,closed_book,total_net_sales,I don't know,False,REFUSED
-UEIC,closed_book,research_and_development,I don't know. I'm not confident of the exact research and development expense Universal Electronics reported for the fiscal year ended 2025-12-31. I can't verify that figure.,False,REFUSED
+UEIC,closed_book,research_and_development,"I don't know. I'm not confident of the exact research and development figure for Universal Electronics' fiscal year ended December 31, 2025.",False,REFUSED
 UEIC,closed_book,net_income,I don't know,False,REFUSED
-UEIC,closed_book,gross_margin,"I don't know. Universal Electronics' fiscal year ended December 31, 2025 is very recent, and I'm not confident of the exact gross profit figure in its annual report for that year.",False,REFUSED
+UEIC,closed_book,gross_margin,"I don't know. The fiscal year ended 2025-12-31 is very recent, and I can't confidently state Universal Electronics' gross profit for that year from the annual report.",False,REFUSED
 UEIC,closed_book,operating_income,I don't know,False,REFUSED
-UEIC,closed_book,diluted_eps,"I don't know. My knowledge doesn't include Universal Electronics' results for the fiscal year ended December 31, 2025, so I can't state the diluted EPS with confidence.",False,REFUSED
-UEIC,closed_book,cash_and_equivalents,I don't know,False,REFUSED
+UEIC,closed_book,diluted_eps,"I don't know. I can't confidently confirm Universal Electronics' diluted EPS for the fiscal year ended December 31, 2025.",False,REFUSED
+UEIC,closed_book,cash_and_equivalents,"I don't know. I don't have a reliable figure for Universal Electronics' cash and cash equivalents as of December 31, 2025, so I won't guess.",False,REFUSED
