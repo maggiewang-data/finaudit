@@ -27,7 +27,9 @@ from .llm import AnthropicClient, LLMClient
 from .retrieval import BM25Retriever
 from .verify import Judgement, parse_judgement
 
-NEEDS_RETRY = {"HALLUCINATED", "PARTIAL", "UNPARSEABLE"}
+# UNPARSEABLE is deliberately not retried: an unreadable judge reply says nothing
+# about the answer, so re-asking the answer model would waste a call.
+NEEDS_RETRY = {"HALLUCINATED", "PARTIAL"}
 
 
 @dataclass
@@ -36,6 +38,7 @@ class Attempt:
     verdict: str
     reason: str
     tokens: int
+    judge_raw: str = ""
 
 
 @dataclass
@@ -65,12 +68,12 @@ class FinAudit:
         self.client = client
         self.log_path = log_path
 
-    def _judge(self, context: str, question: str, answer: str) -> tuple[Judgement, int]:
+    def _judge(self, context: str, question: str, answer: str) -> tuple[Judgement, int, str]:
         r = self.client.complete(prompts.JUDGE_SYSTEM,
                                  prompts.JUDGE_USER.format(context=context, question=question,
                                                            answer=answer),
                                  model=JUDGE_MODEL, max_tokens=150)
-        return parse_judgement(r.text), r.input_tokens + r.output_tokens
+        return parse_judgement(r.text), r.input_tokens + r.output_tokens, r.text
 
     def ask(self, question: str) -> Result:
         pages = self.retriever.top_k(question, TOP_K)
@@ -81,9 +84,9 @@ class FinAudit:
         result = Result(self.ticker, question, [p.number for p in pages])
 
         r = self.client.complete(prompts.ANSWER_SYSTEM, user, model=ANSWER_MODEL)
-        j, jt = self._judge(context, question, r.text)
+        j, jt, raw = self._judge(context, question, r.text)
         result.attempts.append(Attempt(r.text, j.verdict, j.reason,
-                                       r.input_tokens + r.output_tokens + jt))
+                                       r.input_tokens + r.output_tokens + jt, raw))
 
         # Reflection: if the judge rejects the answer, show the model why and let it try once more.
         for _ in range(MAX_RETRIES):
@@ -93,9 +96,9 @@ class FinAudit:
                 answer=result.final.answer, reason=result.final.reason,
                 not_found=prompts.NOT_FOUND)
             r = self.client.complete(prompts.ANSWER_SYSTEM, retry, model=ANSWER_MODEL)
-            j, jt = self._judge(context, question, r.text)
+            j, jt, raw = self._judge(context, question, r.text)
             result.attempts.append(Attempt(r.text, j.verdict, j.reason,
-                                           r.input_tokens + r.output_tokens + jt))
+                                           r.input_tokens + r.output_tokens + jt, raw))
 
         audit.write({
             "ticker": self.ticker,
@@ -121,4 +124,6 @@ if __name__ == "__main__":
     res = FinAudit(ticker, AnthropicClient()).ask(question)
     for i, a in enumerate(res.attempts, 1):
         print(f"--- attempt {i}: {a.verdict} ({a.reason})\n{a.answer}\n")
+        if a.verdict == "UNPARSEABLE":
+            print(f"[raw judge reply]\n{a.judge_raw}\n")
     print(f"Pages used: {res.pages_used}.  Logged to {AUDIT_LOG}")

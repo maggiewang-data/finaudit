@@ -83,6 +83,17 @@ def test_parse_judgement():
     assert parse_judgement("I think it's fine").verdict == "UNPARSEABLE"
 
 
+@pytest.mark.parametrize("raw", [
+    "**VERDICT:** GROUNDED\n**REASON:** Matches p. 29.",
+    "Verdict: Grounded\nReason: Matches p. 29.",
+    "## Verdict\nGROUNDED\n\n## Reason\nMatches p. 29.",
+    "VERDICT - GROUNDED. REASON: Matches p. 29.",
+])
+def test_parse_judgement_tolerates_formatting(raw):
+    j = parse_judgement(raw)
+    assert j.verdict == "GROUNDED" and "p. 29" in j.reason
+
+
 # ---- Pipeline: retry and audit log ---------------------------------------- #
 def test_grounded_answer_is_not_retried(pages, tmp_path):
     fake = FakeClient(["Net income was $132,175 million [p. 4].",

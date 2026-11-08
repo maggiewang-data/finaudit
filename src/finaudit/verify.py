@@ -33,18 +33,19 @@ class Judgement:
     reason: str
 
 
+VERDICT_RE = re.compile(r"verdict\W*(GROUNDED|PARTIAL|HALLUCINATED|REFUSED)", re.I)
+REASON_RE = re.compile(r"reason\W*:?\W*(.+)", re.I)
+
+
 def parse_judgement(text: str) -> Judgement:
-    verdict, reason = "UNPARSEABLE", ""
-    for line in text.splitlines():
-        line = line.strip()
-        if line.upper().startswith("VERDICT:"):
-            words = line.split(":", 1)[1].strip().upper().split()
-            word = words[0].strip(".,*") if words else ""
-            if word in {"GROUNDED", "PARTIAL", "HALLUCINATED", "REFUSED"}:
-                verdict = word
-        elif line.upper().startswith("REASON:"):
-            reason = line.split(":", 1)[1].strip()
-    return Judgement(verdict, reason)
+    """Read the judge's verdict even when it adds formatting like **VERDICT:** or
+    'Verdict - Grounded'. Models don't always follow an output format exactly, so
+    the parser looks for the pattern instead of an exact line prefix."""
+    clean = text.replace("*", "").replace("#", "").replace("`", "")
+    v = VERDICT_RE.search(clean)
+    r = REASON_RE.search(clean)
+    return Judgement(v.group(1).upper() if v else "UNPARSEABLE",
+                     r.group(1).strip() if r else "")
 
 
 def is_refusal(answer: str) -> bool:
