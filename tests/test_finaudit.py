@@ -145,3 +145,22 @@ def test_reason_spanning_lines_is_kept_whole():
     j = parse_judgement("VERDICT: GROUNDED\n"
                         "REASON: The $45,765 million R&D figure,\nmatches page 29.")
     assert j.reason == "The $45,765 million R&D figure, matches page 29."
+
+
+class CutOffClient(FakeClient):
+    """Like FakeClient, but the judge's reply is cut off by the token limit."""
+
+    def complete(self, system, user, model, max_tokens=1500):
+        r = super().complete(system, user, model, max_tokens)
+        if "fact-checker" in system:
+            r.stop_reason = "max_tokens"
+        return r
+
+
+def test_cut_off_judge_reply_is_recorded_not_retried(pages, tmp_path):
+    log = tmp_path / "log.jsonl"
+    fake = CutOffClient(["Net income was $132,175 million [p. 4].", "VERDICT: GRO"])
+    res = FinAudit("AAPL", fake, pages=pages, filing=FILING, log_path=log).ask("Net income?")
+    assert res.final.verdict == "UNPARSEABLE" and res.final.truncated
+    assert len(res.attempts) == 1   # a broken judge reply is not a reason to retry
+    assert json.loads(log.read_text())["any_truncated"] is True

@@ -43,8 +43,9 @@ def run_test_set(fa: FinAudit, truth: dict, metrics=None) -> list[dict]:
                      "first_numeric": numeric_verdict(first.answer, tv),
                      "final_numeric": numeric_verdict(final.answer, tv),
                      "first_judge": first.verdict, "final_judge": final.verdict,
-                     "retried": len(res.attempts) > 1, "pages": res.pages_used,
-                     "answer": final.answer})
+                     "retried": len(res.attempts) > 1,
+                     "truncated": any(a.truncated for a in res.attempts),
+                     "pages": res.pages_used, "answer": final.answer})
     if metrics is None:
         for template in OUT_OF_DOC:
             res = fa.ask(template.format(company=company))
@@ -54,8 +55,9 @@ def run_test_set(fa: FinAudit, truth: dict, metrics=None) -> list[dict]:
                          "first_numeric": numeric_verdict(first.answer, None),
                          "final_numeric": numeric_verdict(final.answer, None),
                          "first_judge": first.verdict, "final_judge": final.verdict,
-                         "retried": len(res.attempts) > 1, "pages": res.pages_used,
-                         "answer": final.answer})
+                         "retried": len(res.attempts) > 1,
+                         "truncated": any(a.truncated for a in res.attempts),
+                         "pages": res.pages_used, "answer": final.answer})
     return rows
 
 
@@ -111,7 +113,9 @@ def main(client: LLMClient | None = None) -> None:
           f"| Out-of-document questions correctly refused | "
           f"{(ood.first_numeric == 'REFUSED').sum()}/{len(ood)} | "
           f"{(ood.final_numeric == 'REFUSED').sum()}/{len(ood)} |",
-          f"\nRetries triggered: {int(df.retried.sum())} of {len(df)} questions.\n",
+          f"\nRetries triggered: {int(df.retried.sum())} of {len(df)} questions. "
+          f"Replies cut off by the token limit: {int(df.truncated.sum())}. "
+          f"Unreadable judge replies: {int((df.first_judge == 'UNPARSEABLE').sum())}.\n",
           "## 2. Is the judge right? (first attempts vs. ground truth)\n",
           agree.to_markdown(), "",
           "## 3. Representation-bias probe\n",

@@ -18,11 +18,12 @@ class LLMResponse:
     input_tokens: int
     output_tokens: int
     latency_s: float
+    stop_reason: str = "end_turn"   # "max_tokens" means the reply was cut off
 
 
 class LLMClient(Protocol):
     def complete(self, system: str, user: str, model: str,
-                 max_tokens: int = 600) -> LLMResponse: ...
+                 max_tokens: int = 1500) -> LLMResponse: ...
 
 
 class AnthropicClient:
@@ -32,14 +33,15 @@ class AnthropicClient:
             raise RuntimeError("Set ANTHROPIC_API_KEY in .env")
         self.client = anthropic.Anthropic()
 
-    def complete(self, system: str, user: str, model: str, max_tokens: int = 600) -> LLMResponse:
+    def complete(self, system: str, user: str, model: str,
+                 max_tokens: int = 1500) -> LLMResponse:
         t0 = time.perf_counter()
         msg = self.client.messages.create(
             model=model, max_tokens=max_tokens,
             system=system, messages=[{"role": "user", "content": user}])
         text = "".join(b.text for b in msg.content if b.type == "text")
         return LLMResponse(text, model, msg.usage.input_tokens, msg.usage.output_tokens,
-                           time.perf_counter() - t0)
+                           time.perf_counter() - t0, str(msg.stop_reason))
 
 
 class FakeClient:
@@ -49,6 +51,7 @@ class FakeClient:
         self.responses = list(responses)
         self.calls: list[dict] = []
 
-    def complete(self, system: str, user: str, model: str, max_tokens: int = 600) -> LLMResponse:
+    def complete(self, system: str, user: str, model: str,
+                 max_tokens: int = 1500) -> LLMResponse:
         self.calls.append({"system": system, "user": user, "model": model})
         return LLMResponse(self.responses.pop(0), model, len(user) // 4, 50, 0.0)

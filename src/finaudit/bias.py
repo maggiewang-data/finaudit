@@ -34,7 +34,7 @@ def closed_book(client: LLMClient, filing: dict, truth: dict) -> list[dict]:
                                                             ticker=filing["ticker"],
                                                             period_end=filing["period_end"],
                                                             question=q),
-                            model=ANSWER_MODEL, max_tokens=120)
+                            model=ANSWER_MODEL, max_tokens=600)
         tv = truth.get(metric, {}).get("value")
         rows.append({"ticker": filing["ticker"], "condition": "closed_book", "metric": metric,
                      "answer": r.text, "answered": not is_refusal(r.text),

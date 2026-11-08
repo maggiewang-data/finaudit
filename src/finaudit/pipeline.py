@@ -31,6 +31,13 @@ from .verify import Judgement, parse_judgement
 # about the answer, so re-asking the answer model would waste a call.
 NEEDS_RETRY = {"HALLUCINATED", "PARTIAL"}
 
+# Generous limits. The first live run used 150 tokens for the judge and 600 for
+# answers, and replies were cut off mid-sentence ("VERDICT: GRO"). Newer models
+# can spend part of the budget before writing visible text, so leave headroom
+# and record whenever a reply still hits the limit.
+ANSWER_MAX_TOKENS = 1500
+JUDGE_MAX_TOKENS = 1000
+
 
 @dataclass
 class Attempt:
@@ -39,6 +46,7 @@ class Attempt:
     reason: str
     tokens: int
     judge_raw: str = ""
+    truncated: bool = False   # answer or judge reply hit the token limit
 
 
 @dataclass
@@ -72,7 +80,8 @@ class FinAudit:
         r = self.client.complete(prompts.JUDGE_SYSTEM,
                                  prompts.JUDGE_USER.format(context=context, question=question,
                                                            answer=answer),
-                                 model=JUDGE_MODEL, max_tokens=150)
+                                 model=JUDGE_MODEL, max_tokens=JUDGE_MAX_TOKENS)
+        self._judge_cut = r.stop_reason == "max_tokens"
         return parse_judgement(r.text), r.input_tokens + r.output_tokens, r.text
 
     def ask(self, question: str) -> Result:
@@ -83,10 +92,12 @@ class FinAudit:
                                           context=context, question=question)
         result = Result(self.ticker, question, [p.number for p in pages])
 
-        r = self.client.complete(prompts.ANSWER_SYSTEM, user, model=ANSWER_MODEL)
+        r = self.client.complete(prompts.ANSWER_SYSTEM, user, model=ANSWER_MODEL,
+                                 max_tokens=ANSWER_MAX_TOKENS)
         j, jt, raw = self._judge(context, question, r.text)
         result.attempts.append(Attempt(r.text, j.verdict, j.reason,
-                                       r.input_tokens + r.output_tokens + jt, raw))
+                                       r.input_tokens + r.output_tokens + jt, raw,
+                                       r.stop_reason == "max_tokens" or self._judge_cut))
 
         # Reflection: if the judge rejects the answer, show the model why and let it try once more.
         for _ in range(MAX_RETRIES):
@@ -95,10 +106,12 @@ class FinAudit:
             retry = user + "\n\n" + prompts.RETRY_USER.format(
                 answer=result.final.answer, reason=result.final.reason,
                 not_found=prompts.NOT_FOUND)
-            r = self.client.complete(prompts.ANSWER_SYSTEM, retry, model=ANSWER_MODEL)
+            r = self.client.complete(prompts.ANSWER_SYSTEM, retry, model=ANSWER_MODEL,
+                                     max_tokens=ANSWER_MAX_TOKENS)
             j, jt, raw = self._judge(context, question, r.text)
             result.attempts.append(Attempt(r.text, j.verdict, j.reason,
-                                           r.input_tokens + r.output_tokens + jt, raw))
+                                           r.input_tokens + r.output_tokens + jt, raw,
+                                           r.stop_reason == "max_tokens" or self._judge_cut))
 
         audit.write({
             "ticker": self.ticker,
@@ -111,6 +124,7 @@ class FinAudit:
             "final_verdict": result.final.verdict,
             "final_reason": result.final.reason,
             "retried": len(result.attempts) > 1,
+            "any_truncated": any(a.truncated for a in result.attempts),
             "attempts": [asdict(a) for a in result.attempts],
             "total_tokens": sum(a.tokens for a in result.attempts),
         }, self.log_path)
