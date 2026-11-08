@@ -44,13 +44,43 @@ The first version of this test used a made-up "SmallCo Inc." with a few invented
 
 ## Results
 
-`make eval` runs the full evaluation and writes [`results/eval.md`](results/eval.md). It covers:
-- 10 in-document questions on Apple's fiscal 2026 10-K, scored against XBRL
-- 5 out-of-document questions (today's stock price, the next CEO, …) where the only correct answer is "Not found in document"
-- the judge-vs-ground-truth table
-- the bias probe on both companies
+Answer model Claude Sonnet 5.5, judge model Claude Haiku 5.5, on Apple's 10-K for the fiscal year ended September 26, 2026. Full output: [`results/eval.md`](results/eval.md). Every call is in [`results/audit_log.jsonl`](results/audit_log.jsonl).
 
-The run takes about 100 API calls, well under $1.
+| | Result |
+|---|---|
+| In-document questions answered with the correct number | **9 / 10** |
+| Out-of-document questions correctly refused | **5 / 5** |
+| Reflection retries needed | 0 |
+| Judge verdicts that matched ground truth | 14 / 15 |
+
+### What the numbers mean
+
+**The model didn't invent anything.** Asked for today's stock price or the next CEO, it said "Not found in document" every time. When the excerpts showed nearby numbers, like average buyback prices or a shareholder-return index, it said explicitly that these were *not* the current stock price.
+
+**The one "wrong" answer was grounded, and that's the most useful finding.** Asked how much Apple paid to repurchase shares, the model answered $85.8 billion and cited the equity note. The XBRL ground truth is $86.4 billion: the *cash paid*, from the cash flow statement. Both numbers are in the filing. Repurchases are recorded when shares are retired, but cash moves on its own schedule (the filing mentions up-front payments on accelerated repurchase agreements). The judge correctly marked the answer GROUNDED, because it *was* supported by the page. **Only the independent ground-truth check caught that it wasn't the figure the question needed.** A groundedness judge answers "is this in the document?", not "is this the right number?", and a financial question can have several defensible answers. That's the case for keeping a check that doesn't rely on another model.
+
+**The judge never raised a false alarm, but this test can't show how good it is at catching errors.** It accepted all 14 correct answers. The model made almost no mistakes, so the judge was barely tested on wrong answers. Measuring its catch rate needs a set of deliberately wrong answers (wrong year, wrong unit, wrong line item), and that's the next step.
+
+### Representation-bias probe
+
+| | Apple | Universal Electronics |
+|---|---|---|
+| Closed book: gave a number instead of "I don't know" | 0 / 7 | 0 / 7 |
+| Open book, same context size: correct number | 7 / 7 | 6 / 7 |
+
+**No size bias showed up.** I expected the model to answer Apple questions from memory, since it has seen far more about Apple. Instead it declined every closed-book question for both companies, because the fiscal year was newer than anything it could know.
+
+**The one open-book miss wasn't about size.** Universal Electronics *lost money*, so its filing reports an "operating **loss**." The keyword search looked for "operating income", never retrieved the income statement, and the model correctly said the answer wasn't in the excerpts. The failure came from how unprofitable companies label a line, not from how famous the company is. I left it unfixed on purpose: changing retrieval after seeing the test question would inflate the score. The fix (treating "income" and "loss" as related terms) is listed below.
+
+### What broke on the first live run, and what I changed
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Judge verdicts read as UNPARSEABLE | The judge wrapped its verdict in markdown, and the parser expected an exact line prefix | Pattern-based parsing; raw judge replies saved in the audit log |
+| Judge replies cut off ("VERDICT: GRO") and some answers truncated | Token limits set too low (150 for the judge, 600 for answers) | Higher limits; every cut-off reply is now flagged and counted |
+| Unreadable judge replies triggered a retry | Retry logic treated a judge failure as an answer failure | Retry only on HALLUCINATED or PARTIAL |
+
+The second run had 0 unreadable judge replies and 0 truncations.
 
 ## Connection to published work
 
@@ -88,7 +118,10 @@ src/finaudit/
 tests/           24 tests using real excerpts and figures from Apple's fiscal 2026 10-K
 ```
 
-## Limits
+## Limits and next steps
 - One filing per company and a small question set. This is a working method, not a benchmark.
+- **Measure the judge's catch rate** with deliberately wrong answers (wrong year, wrong unit, wrong line item).
+- **Make metric questions precise** ("cash paid for repurchases, per the cash flow statement"), or accept every defensible figure in the filing.
+- **Retrieval for loss-making companies:** treat "income" and "loss" as related terms, or combine keyword and embedding search.
 - The numeric checker covers figures. It can't verify qualitative claims ("risks include…"), which still rely on the judge.
 - The bias probe uses one pair of companies. A real study would use many pairs matched by industry.
